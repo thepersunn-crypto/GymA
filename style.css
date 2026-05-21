@@ -1490,3 +1490,97 @@ section {
         gap: 1rem !important;
     }
 }
+
+/* ==========================================================================
+   DYNAMIC INTERACTIVE INQUIRY SELECTION & TOAST
+   ========================================================================== */
+.program-card, .pricing-card, .trainer-card {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.selected-inquiry {
+    border: 2px solid var(--accent) !important;
+    box-shadow: 0 0 25px rgba(230, 46, 45, 0.4), inset 0 0 10px rgba(230, 46, 45, 0.15) !important;
+    transform: translateY(-8px) scale(1.02) !important;
+}
+
+.inquiry-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(10, 10, 12, 0.95);
+    border: 1px solid var(--accent);
+    color: var(--text-light);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    animation: pulseGlow 1.5s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% {
+        box-shadow: 0 0 5px rgba(230, 46, 45, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(230, 46, 45, 0.8);
+    }
+}
+
+#inquiry-toast {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    background: rgba(10, 10, 12, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(230, 46, 45, 0.4);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    max-width: 380px;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+#inquiry-toast::before {
+    content: "\f232";
+    font-family: "Font Awesome 6 Brands";
+    color: #25D366;
+    font-size: 1.2rem;
+}
+
+#inquiry-toast.show {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+
+@media (max-width: 768px) {
+    #inquiry-toast {
+        bottom: 80px;
+        left: 20px;
+        right: 20px;
+        max-width: none;
+        text-align: center;
+        justify-content: center;
+    }
+}

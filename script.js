@@ -276,16 +276,115 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ==========================================
-       8. Trainer & Program Booking WhatsApp Redirects
+       8. Trainer, Program & Plan Dynamic WhatsApp Redirects
        ========================================== */
     // Helper to format WhatsApp message strings
     const sendWhatsAppMsg = (text) => {
-        const phone = '+15550192831'; // Default specified in Profile
+        const phone = '9779822209906'; // User's Nepalese phone number
         const encodedText = encodeURIComponent(text);
         window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
     };
 
-    // Global booking button bindings
+    // State for interactive card inquiries
+    window.lastSelectedService = null;
+    window.lastSelectedType = null; // 'Program', 'Plan', or 'Trainer'
+
+    // Show elegant glassmorphic corner toast for active selections
+    const showInquiryToast = (message) => {
+        let toast = document.getElementById('inquiry-toast');
+        if (!toast) {
+            toast = document.createElement('div');
+            toast.id = 'inquiry-toast';
+            document.body.appendChild(toast);
+        }
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        clearTimeout(window.toastTimeout);
+        window.toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 4000);
+    };
+
+    // Initialize Card click listeners for selective WhatsApp custom messaging
+    const initCardSelection = () => {
+        const programCards = document.querySelectorAll('.program-card');
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        const trainerCards = document.querySelectorAll('.trainer-card');
+
+        const clearSelections = () => {
+            document.querySelectorAll('.program-card, .pricing-card, .trainer-card').forEach(card => {
+                card.classList.remove('selected-inquiry');
+                const badge = card.querySelector('.inquiry-badge');
+                if (badge) badge.remove();
+            });
+        };
+
+        // Programs Selection
+        programCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.program-cta')) return;
+                
+                clearSelections();
+                card.classList.add('selected-inquiry');
+                
+                const title = card.querySelector('h3').textContent.trim();
+                window.lastSelectedService = title;
+                window.lastSelectedType = 'Program';
+
+                const badge = document.createElement('div');
+                badge.className = 'inquiry-badge';
+                badge.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Inquiry Active';
+                card.appendChild(badge);
+
+                showInquiryToast(`Selected: "${title}". Click any WhatsApp link or call button to send details!`);
+            });
+        });
+
+        // Pricing Plans Selection
+        pricingCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('button')) return;
+                
+                clearSelections();
+                card.classList.add('selected-inquiry');
+                
+                const planName = card.querySelector('.pricing-plan-name').textContent.trim();
+                window.lastSelectedService = planName;
+                window.lastSelectedType = 'Plan';
+
+                const badge = document.createElement('div');
+                badge.className = 'inquiry-badge';
+                badge.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Inquiry Active';
+                card.appendChild(badge);
+
+                showInquiryToast(`Selected: "${planName}" Membership. Tap WhatsApp to register!`);
+            });
+        });
+
+        // Trainer Selection
+        trainerCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('button')) return;
+                
+                clearSelections();
+                card.classList.add('selected-inquiry');
+                
+                const coachName = card.querySelector('h3').textContent.trim().replace('Coach ', '');
+                window.lastSelectedService = coachName;
+                window.lastSelectedType = 'Trainer';
+
+                const badge = document.createElement('div');
+                badge.className = 'inquiry-badge';
+                badge.innerHTML = '<i class="fa-brands fa-whatsapp"></i> Inquiry Active';
+                card.appendChild(badge);
+
+                showInquiryToast(`Selected: Coach ${coachName}. Tap WhatsApp to book an assessment!`);
+            });
+        });
+    };
+
+    // Global direct booking handlers
     window.bookTrial = () => {
         sendWhatsAppMsg('Hello Vigor Luxe Fit! I would like to book a Free VIP 3-Day Pass to check out the club. Can you help me schedule?');
     };
@@ -301,5 +400,31 @@ document.addEventListener('DOMContentLoaded', () => {
     window.joinPlan = (planName) => {
         sendWhatsAppMsg(`Hi! I'm ready to transform. I would like to register and get started on the "${planName}" membership plan.`);
     };
+
+    // Dynamically compile WhatsApp query text based on state selection
+    window.openGeneralWhatsApp = (triggerType) => {
+        let msg = '';
+        if (window.lastSelectedService) {
+            const type = window.lastSelectedType;
+            const name = window.lastSelectedService;
+            if (type === 'Program') {
+                msg = `Hi Vigor Luxe Fit! I am inquiring about the "${name}" program I saw on your website. Could you please share the class schedules, duration, and pricing options?`;
+            } else if (type === 'Plan') {
+                msg = `Hello! I've selected the "${name}" membership plan on your website and would like to register and get started. Can you guide me through the registration steps?`;
+            } else if (type === 'Trainer') {
+                msg = `Hi! I'm interested in booking a personal assessment and physical training sessions with Coach ${name}. Please let me know their upcoming availability.`;
+            }
+        } else {
+            if (triggerType === 'widget') {
+                msg = "Hi Vigor Luxe Fit! I want to claim my free VIP 3-Day Pass and get more details about your premium gym memberships.";
+            } else {
+                msg = "Hello! I am visiting your website and would like to chat with a coach about starting my training journey at Vigor Luxe Fit.";
+            }
+        }
+        sendWhatsAppMsg(msg);
+    };
+
+    // Run card selection initialization
+    initCardSelection();
 
 });
