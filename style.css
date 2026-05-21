@@ -1358,3 +1358,135 @@ section {
         min-height: 380px;
     }
 }
+
+/* ==========================================================================
+   12. ULTRA RESPONSIVE MOBILE UX OVERRIDES (STEP 11)
+   ========================================================================== */
+
+/* Main Mobile Breakpoint (Tablet & Phone) */
+@media (max-width: 992px) {
+    /* Navbar Hamburger & Links refactoring */
+    .hamburger {
+        display: flex !important; /* Force display hamburger */
+    }
+    
+    .nav-links {
+        display: none; /* Hide default navbar links on desktop style */
+    }
+    
+    .nav-links.active {
+        display: flex !important; /* Show active dropdown drawer */
+    }
+
+    .nav-cta-btn {
+        display: none !important; /* Hide desktop join button, replaced by sticky bar */
+    }
+    
+    /* Responsive margins/paddings for all sections */
+    section {
+        padding: 5rem 0 !important;
+    }
+    
+    .container {
+        padding: 0 1.5rem !important;
+    }
+    
+    /* Grid system layout compression to prevent overflow */
+    .programs-grid {
+        grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+    
+    .pricing-grid {
+        grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)) !important;
+        gap: 2rem !important;
+    }
+    
+    /* Disable scale-up vertical card overlap */
+    .pricing-card.featured {
+        transform: scale(1) !important;
+        border-color: var(--accent) !important;
+    }
+
+    .trans-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2.5rem !important;
+    }
+
+    .trans-slider-container {
+        max-width: 100% !important;
+        aspect-ratio: 4 / 3 !important;
+    }
+    
+    .reviews-grid {
+        grid-template-columns: repeat(auto-fit, minmax(285px, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+}
+
+/* Smartphone Portrait Breakpoint */
+@media (max-width: 480px) {
+    .section-title {
+        font-size: 2.2rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem !important;
+        line-height: 1.05 !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .hero-actions {
+        flex-direction: column !important;
+        gap: 1rem !important;
+        width: 100% !important;
+    }
+    
+    .hero-actions .btn {
+        width: 100% !important;
+    }
+    
+    .hero-trust {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 1.25rem !important;
+        padding-top: 1.5rem !important;
+    }
+    
+    .hero-trust .trust-item {
+        border-left: none !important;
+        padding-left: 0 !important;
+    }
+    
+    .usp-card {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .pricing-card {
+        padding: 2.5rem 1.5rem !important;
+    }
+    
+    .bmi-calc-box {
+        padding: 2rem 1.5rem !important;
+    }
+    
+    .cta-box {
+        padding: 3.5rem 1.5rem !important;
+    }
+    
+    .footer {
+        padding: 4rem 0 2rem 0 !important;
+    }
+    
+    .footer-bottom {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 1rem !important;
+    }
+}
