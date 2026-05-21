@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
        ========================================== */
     // Helper to format WhatsApp message strings
     const sendWhatsAppMsg = (text) => {
-        const phone = '+15550192831'; // Default specified in Profile
+        const phone = '+9822209906'; // Default specified in Profile
         const encodedText = encodeURIComponent(text);
         window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
     };
